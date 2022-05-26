@@ -13,7 +13,6 @@ with date_union as(
     ,discharge_disposition_code
   from {{ ref('encounter_type')}} e
   where claim_type = 'I'
-  --and patient_id = '100042499'
 
 union all
   
@@ -30,7 +29,7 @@ union all
     ,discharge_disposition_code
   from {{ ref('encounter_type')}} e
   where claim_type = 'I'
-  --and patient_id = '100042499'
+
 )
 /** Numbering claims is enable sequential ordering  **/ 
 ,sort_date_union as(

@@ -1,5 +1,3 @@
-{{ config(materialized='table')}}
-
 with encounter_crosswalk as(
   select
       case
@@ -11,12 +9,7 @@ with encounter_crosswalk as(
               then 'dme'
           when revenue_center_code in ('0540', '0545') 
               then 'ambulance'
-          when revenue_center_code in ('0251', '0252', '0253', '0254', '0255', '0256', '0257', '0258', '0259'
-          , '0270', '0272', '0276', '0360', '0361', '0362', '0367', '0369', '0370', '0371', '0374', '0379'
-          , '0380', '0381', '0382', '0383', '0384', '0385', '0386', '0387', '0389', '0390', '0391', '0399'
-          , '0450', '0459', '0490', '0499', '0510', '0511', '0512', '0519', '0520', '0521', '0522', '0523'
-          , '0529', '0700', '0709', '0710', '0719', '0750', '0759', '0760', '0761', '0762', '0920', '0929'
-          , '0940', '0949') 
+          when revenue_center_code in ('0360', '0361', '0490', '0499') 
               then 'ambulatory surgical center'
           when left(bill_type_code,2) in ('11', '12', '41', '42', '48') 
               then 'acute inpatient'
