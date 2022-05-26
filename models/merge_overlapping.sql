@@ -1,5 +1,12 @@
+/**  Creating a list of encounters where there is date overlap.  Overlap occurs in three ways:
+    Strict -  entire time span of one claim fits within the time span of another another
+    Start date - start date of one claim fits within the time span of another claims
+    End date - end date of one claim fits with the time span of another.
+
+    This query only produces overlaps.  Cannot provide a list of all claims due to performance issues **/
+
 with population as(
-  select distinct
+  select
   	merge_claim_id
   	,original_claim_id
   	,patient_id
@@ -12,7 +19,7 @@ with population as(
 )
   
 , strict_overlap as(  
-  select distinct 
+  select 
   	e.merge_claim_id as merge_claim_id_a
     ,e.original_claim_id as original_claim_id_a
     ,e.patient_id as patient_id_a
@@ -28,7 +35,6 @@ with population as(
   inner join population e2
     on e.patient_id = e2.patient_id
     and e.encounter_type = e2.encounter_type
-    and e.merge_claim_id <> e2.merge_claim_id
   	and e.facility_npi = e2.facility_npi
   where 1=1
   and e2.claim_start_date >= e.claim_start_date
@@ -53,7 +59,6 @@ with population as(
   inner join population e2
     on e.patient_id = e2.patient_id
     and e.encounter_type = e2.encounter_type
-    and e.merge_claim_id <> e2.merge_claim_id
   	and e.facility_npi = e2.facility_npi
   where 1=1
   and e2.claim_start_date >= e.claim_start_date
@@ -76,7 +81,6 @@ with population as(
   inner join population e2
     on e.patient_id = e2.patient_id
     and e.encounter_type = e2.encounter_type
-    and e.merge_claim_id <> e2.merge_claim_id
   	and e.facility_npi = e2.facility_npi
   where 1=1
   and e2.claim_end_date >= e.claim_start_date
@@ -85,26 +89,29 @@ with population as(
    
    
    select 
-   merge_claim_id_a
-   ,merge_claim_id_b
-   ,original_claim_id_a
-   ,original_claim_id_b
-   ,'1' as link_flag
-   from strict_overlap
+    merge_claim_id_a
+    ,merge_claim_id_b
+    ,original_claim_id_a
+    ,original_claim_id_b
+    ,'1' as link_flag
+    from strict_overlap
+    
    union all
    select
-   merge_claim_id_a
-   ,merge_claim_id_b
-   ,original_claim_id_a
-   ,original_claim_id_b
-    ,'1' as link_flag
+    merge_claim_id_a
+    ,merge_claim_id_b
+    ,original_claim_id_a
+    ,original_claim_id_b
+      ,'1' as link_flag
    from start_overlap
+
    union all 
+
    select
-   merge_claim_id_a
-   ,merge_claim_id_b
-   ,original_claim_id_a
-   ,original_claim_id_b
-    ,'1' as link_flag
+    merge_claim_id_a
+    ,merge_claim_id_b
+    ,original_claim_id_a
+    ,original_claim_id_b
+      ,'1' as link_flag
    from end_overlap
    
