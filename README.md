@@ -4,7 +4,7 @@
 
 Check out the [Claims Preprocessing Google Sheet](https://docs.google.com/spreadsheets/d/1TMMM1u8GTdWqxGcHALRtGMjcxBXQwBbWUW8pHL66W_E/edit#gid=245639858)
 
-Check out our [Docs](https://docs.tuvahealth.com/)
+Check out our [Docs](http://thetuvaproject.com/)
 
 Our claims pre-processing engine starts from an input layer containing standard data elements from raw claims datasets and processes the claims to make them useful for analysis.  It is done by:
 
