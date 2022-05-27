@@ -61,7 +61,8 @@ models:
                 to: ref('revenue_code')
                 field: revenue_code
         - name: place_of_service_code
-          description:  The 2 digit place of service code on the claim.  Should only on professional claims.  Must be 2 digits including leading zero.
+          description:  The 2 digit place of service code on the claim.  Should only appear on professional claims.  Must be 2 digits including leading zero.
+
           tests:
             - prof_place_of_service_code
             - relationships:
