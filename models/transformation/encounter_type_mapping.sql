@@ -193,7 +193,6 @@ with encounter_crosswalk as(
           when place_of_service_code = '72' then 'office visit' 
           when place_of_service_code = '81' then 'labs' 
           when place_of_service_code = '99' then 'other' 
-
       end as encounter_type
   ,bill_type_code
   ,revenue_center_code
