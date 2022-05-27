@@ -8,4 +8,4 @@ select distinct
     ,claim_end_Date
     ,discharge_disposition_code
     ,facility_npi
-  from {{ ref('encounter_type_stage')}}
+  from {{ ref('encounter_type_mapping')}}
