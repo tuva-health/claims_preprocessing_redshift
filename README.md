@@ -6,7 +6,7 @@ Check out the [Claims Preprocessing Google Sheet](https://docs.google.com/spread
 
 Check out our [Docs](https://docs.tuvahealth.com/)
 
-Our claims pre-processing engine starts from an input layer containing standard data elements from raw claims datasets and processes the claims to make them useful for analysis.  It done by:
+Our claims pre-processing engine starts from an input layer containing standard data elements from raw claims datasets and processes the claims to make them useful for analysis.  It is done by:
 
 - Doing adjustments and reversals
 - Assigning encounter types to individual claim lines based on logic involving Bill Type Code, Place of Service Code, Revenue Code, etc. (we defined a list of ~20 encounter types that are relevant for downstream analytics, for example: acute inpatient, office visit, ED, SNF, home health, dialysis, telehealth, hospice, etc.)
