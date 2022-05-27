@@ -1,9 +1,0 @@
-version: 2
-
-sources:
-  - name: core
-    database: medicare_saf
-    schema: core
-    tables:
-      - name: medical_claim
-      - name: eligibility
