@@ -33,5 +33,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 models:
   claims_preprocessing:
-    +materialized: view
-    +schema: claims_preprocessing
+      +materialized: view
+      +schema: claims_preprocessing
+      core:
+        +materialized: table
+        +schema: claims_preprocessing
+
