@@ -1,3 +1,11 @@
+/** This script maps all claim lines to an encounter type.
+    Institutional claims will be mapped using the revenue code and/or bill type code.
+    Profession claims will be mapped using the place of service codes.
+    A SQL case statement evaluates condition sequentially and will stop when the first condition is satisfied.
+        That means that revenue codes 0303 and 0304 will always map to dialysis regardless of any bill type code condition it may meet
+        further down the line  
+    A visual representation of this crosswalk is available in Miro:  https://miro.com/app/board/uXjVOzD3Lyg=/?share_link_id=38987910984**/
+
 with encounter_crosswalk as(
   select
       case
@@ -15,7 +23,7 @@ with encounter_crosswalk as(
               then 'acute inpatient'
           when left(bill_type_code,2) = '13' and revenue_center_code in ('0300','0301','0302','0305','0306','0307','0309','0310','0311','0312','0314','0319')
           /** Laboratory, Chemistry, Immunology, Hematology, Bacteriology & microbiology, Urology, ther laboratory, Laboratory - pathological, Cytology, Histology, Biopsy, Other **/
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) = '13' and revenue_center_code in ('0350','0351','0352','0359'
                                                                           /** CT scan, Head scan, Body Scan, Other **/
             ,'0400','0401','0402','0403','0404','0409'
@@ -26,12 +34,12 @@ with encounter_crosswalk as(
           when left(bill_type_code,2) = '13' 
               then 'outpatient'
           when left(bill_type_code,2) = '14' 
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) in ('15', '16', '17', '18', '19', '21', '22', '24', '25', '26', '27', '28', '45', '46', '47') 
               then 'skilled nursing facility'
           when left(bill_type_code,2) = '23' and revenue_center_code in ('0300','0301','0302','0305','0306','0307','0309','0310','0311','0312','0314','0319')
           /** Laboratory, Chemistry, Immunology, Hematology, Bacteriology & microbiology, Urology, ther laboratory, Laboratory - pathological, Cytology, Histology, Biopsy, Other **/
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) = '23' and revenue_center_code in ('0350','0351','0352','0359'
                                                                           /** CT scan, Head scan, Body Scan, Other **/
             ,'0400','0401','0402','0403','0404','0409'
@@ -45,7 +53,7 @@ with encounter_crosswalk as(
               then 'home health'
           when left(bill_type_code,2) = '33' and revenue_center_code in ('0300','0301','0302','0305','0306','0307','0309','0310','0311','0312','0314','0319')
           /** Laboratory, Chemistry, Immunology, Hematology, Bacteriology & microbiology, Urology, ther laboratory, Laboratory - pathological, Cytology, Histology, Biopsy, Other **/
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) = '33' and revenue_center_code in ('0350','0351','0352','0359'
                                                                           /** CT scan, Head scan, Body Scan, Other **/
             ,'0400','0401','0402','0403','0404','0409'
@@ -57,7 +65,7 @@ with encounter_crosswalk as(
               then 'outpatient'
           when left(bill_type_code,2) = '43' and revenue_center_code in ('0300','0301','0302','0305','0306','0307','0309','0310','0311','0312','0314','0319')
           /** Laboratory, Chemistry, Immunology, Hematology, Bacteriology & microbiology, Urology, ther laboratory, Laboratory - pathological, Cytology, Histology, Biopsy, Other **/
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) = '43' and revenue_center_code in ('0350','0351','0352','0359'
                                                                           /** CT scan, Head scan, Body Scan, Other **/
             ,'0400','0401','0402','0403','0404','0409'
@@ -71,7 +79,7 @@ with encounter_crosswalk as(
               then 'assisted living facility'
           when left(bill_type_code,2) = '53' and revenue_center_code in ('0300','0301','0302','0305','0306','0307','0309','0310','0311','0312','0314','0319')
           /** Laboratory, Chemistry, Immunology, Hematology, Bacteriology & microbiology, Urology, ther laboratory, Laboratory - pathological, Cytology, Histology, Biopsy, Other **/
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) = '53' and revenue_center_code in ('0350','0351','0352','0359'
                                                                           /** CT scan, Head scan, Body Scan, Other **/
             ,'0400','0401','0402','0403','0404','0409'
@@ -85,7 +93,7 @@ with encounter_crosswalk as(
               then 'itermediate care facility'
           when left(bill_type_code,2) = '63' and revenue_center_code in ('0300','0301','0302','0305','0306','0307','0309','0310','0311','0312','0314','0319')
           /** Laboratory, Chemistry, Immunology, Hematology, Bacteriology & microbiology, Urology, ther laboratory, Laboratory - pathological, Cytology, Histology, Biopsy, Other **/
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) = '63' and revenue_center_code in ('0350','0351','0352','0359'
                                                                           /** CT scan, Head scan, Body Scan, Other **/
             ,'0400','0401','0402','0403','0404','0409'
@@ -97,7 +105,7 @@ with encounter_crosswalk as(
               then 'outpatient'
           when left(bill_type_code,2) = '71' and revenue_center_code in ('0300','0301','0302','0305','0306','0307','0309','0310','0311','0312','0314','0319')
           /** Laboratory, Chemistry, Immunology, Hematology, Bacteriology & microbiology, Urology, ther laboratory, Laboratory - pathological, Cytology, Histology, Biopsy, Other **/
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) = '71' and revenue_center_code in ('0350','0351','0352','0359'
                                                                           /** CT scan, Head scan, Body Scan, Other **/
             ,'0400','0401','0402','0403','0404','0409'
@@ -119,7 +127,7 @@ with encounter_crosswalk as(
               then 'mental health center'
           when left(bill_type_code,2) = '77' and revenue_center_code in ('0300','0301','0302','0305','0306','0307','0309','0310','0311','0312','0314','0319')
           /** Laboratory, Chemistry, Immunology, Hematology, Bacteriology & microbiology, Urology, ther laboratory, Laboratory - pathological, Cytology, Histology, Biopsy, Other **/
-              then 'labs'
+              then 'lab'
           when left(bill_type_code,2) = '77' and revenue_center_code in ('0350','0351','0352','0359'
                                                                           /** CT scan, Head scan, Body Scan, Other **/
             ,'0400','0401','0402','0403','0404','0409'
@@ -191,7 +199,7 @@ with encounter_crosswalk as(
           when place_of_service_code = '65' then 'dialysis' 
           when place_of_service_code = '71' then 'office visit' 
           when place_of_service_code = '72' then 'office visit' 
-          when place_of_service_code = '81' then 'labs' 
+          when place_of_service_code = '81' then 'lab' 
           when place_of_service_code = '99' then 'other' 
       end as encounter_type
   ,bill_type_code
@@ -205,12 +213,12 @@ with encounter_crosswalk as(
   ,claim_end_Date
   ,discharge_disposition_code
   ,facility_npi
-from {{ source('core','medical_claim')}}
+from {{ var('medical_claim')}}
 where revenue_center_code <> '0001'
-)
+/** Revenue center code 0001 = total of all revenue centers.  Omitting since these do not need to be mapped **/
+) 
   
-  
-  select distinct
+  select
     claim_type
   	,md5(claim_id+encounter_type) as merge_claim_id
     ,claim_id as original_claim_id
@@ -218,7 +226,7 @@ where revenue_center_code <> '0001'
     ,patient_id
     ,encounter_type
     ,claim_start_date
-    ,claim_end_Date
+    ,claim_end_date
     ,discharge_disposition_code
     ,facility_npi
     ,bill_type_code
