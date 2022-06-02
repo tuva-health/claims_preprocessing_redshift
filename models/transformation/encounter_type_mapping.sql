@@ -216,11 +216,12 @@ with encounter_crosswalk as(
 from {{ var('medical_claim')}}
 where ISNULL(revenue_center_code,'') <> '0001'
 /** Revenue center code 0001 = total of all revenue centers.  Omitting since these do not need to be mapped **/
+and claim_type in ('I','P')
 ) 
   
   select
     claim_type
-  	,md5(claim_id+encounter_type) as merge_claim_id
+  	,md5(claim_id || encounter_type) as merge_claim_id
     ,claim_id as original_claim_id
     ,claim_line_number
     ,patient_id
@@ -233,3 +234,22 @@ where ISNULL(revenue_center_code,'') <> '0001'
     ,revenue_center_code
     ,place_of_service_code
   from encounter_crosswalk
+
+union all
+
+  select
+    claim_type
+  	,md5(claim_id || 'DME') as merge_claim_id
+    ,claim_id as original_claim_id
+    ,claim_line_number
+    ,patient_id
+    ,'DME' as encounter_type
+    ,claim_start_date
+    ,claim_end_date
+    ,discharge_disposition_code
+    ,facility_npi
+    ,bill_type_code
+    ,revenue_center_code
+    ,place_of_service_code
+from {{ var('medical_claim')}}
+where claim_type = 'DME'
