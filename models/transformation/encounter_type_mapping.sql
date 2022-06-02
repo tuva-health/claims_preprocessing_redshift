@@ -214,7 +214,7 @@ with encounter_crosswalk as(
   ,discharge_disposition_code
   ,facility_npi
 from {{ var('medical_claim')}}
-where revenue_center_code <> '0001'
+where ISNULL(revenue_center_code,'') <> '0001'
 /** Revenue center code 0001 = total of all revenue centers.  Omitting since these do not need to be mapped **/
 ) 
   
