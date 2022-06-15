@@ -34,8 +34,12 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   claims_preprocessing:
+    +materialized: table
+    +schema: claims_preprocessing
+    core:
       +materialized: table
-      +schema: claims_preprocessing
+      +schema: core
+
 seeds:
   claims_preprocessing:
     +database: tuva         
