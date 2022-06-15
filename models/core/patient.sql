@@ -19,7 +19,7 @@ with patient_stage as(
         ,deceased_flag
         ,death_date
         ,row_number() over (partition by patient_id order by year DESC) as row_sequence
-    from core.eligibility
+    from {{ var('eligibility')}}
 )
 
 select

@@ -12,6 +12,7 @@ vars:
     source_name: core        # configuration required (name of your source dataset e.g. cms_claims)
 
     medical_claim: "{{ source(var('source_name'),'medical_claim') }}"
+    eligibility: "{{ source(var('source_name'),'eligibility') }}"
 
 # These configurations specify where dbt should look for different types of files.
 # The `source-paths` config, for example, states that models in this project can be

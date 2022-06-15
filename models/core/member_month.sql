@@ -14,4 +14,4 @@ select
     ,year
     ,dual_status
     ,medicare_status
-from core.eligibility
+from {{ var('eligibility')}}
