@@ -1,0 +1,11 @@
+version: 2
+
+models:
+    - name: inst_encounter_final
+      description: All encounters for institutional claims.
+      columns:
+        - name: encounter_id
+          description:  Unique identifer for the encounter and primary key
+          tests:
+            - unique
+            - not_null

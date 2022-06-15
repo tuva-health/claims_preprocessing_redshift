@@ -1,14 +1,19 @@
-/** This script maps all claim lines to an encounter type.
-    Institutional claims will be mapped using the revenue code and/or bill type code.
-    Profession claims will be mapped using the place of service codes.
-    A SQL case statement evaluates condition sequentially and will stop when the first condition is satisfied.
-        That means that revenue codes 0303 and 0304 will always map to dialysis regardless of any bill type code condition it may meet
-        further down the line  
-    A visual representation of this crosswalk is available in Miro:  https://miro.com/app/board/uXjVOzD3Lyg=/?share_link_id=38987910984**/
+-------------------------------------------------------------------------------
+-- Author       Thu Xuan Vu
+-- Created      May 2022
+-- Purpose      Map claims to encounter types at the claim line level.  Institutional claims use rev code or bill type, professional claims use place of service.
+-- Notes        Revenue code 001 was removed to avoid miscalculation of paid amount.  If a claim is split in two and revenue center 001 is assigned to one of splits,
+--              it will add excess dollars to the claim.
+-------------------------------------------------------------------------------
+-- Modification History
+--
+-- 06/15/2022  Thu Xuan Vu
+--      Fixed spelling of treatment and psychiatric
+-------------------------------------------------------------------------------
 
 with encounter_crosswalk as(
   select
-      case
+    case
   		when revenue_center_code in ('0450','0459') then 'emergency department'
       when left(bill_type_code,2) = '11' then 'acute inpatient'
       when left(bill_type_code,2) = '12' then 'acute inpatient'
@@ -122,21 +127,26 @@ with encounter_crosswalk as(
       when place_of_service_code = '02' then 'telehealth'
       when place_of_service_code = '20' then 'urgent care'
             else 'unmapped'
-      end as encounter_type
-  ,bill_type_code
-  ,revenue_center_code
-  ,place_of_service_code
-  ,claim_type
-  ,claim_id
-  ,patient_id
-  ,claim_line_number
-  ,claim_start_date
-  ,claim_end_Date
-  ,discharge_disposition_code
-  ,facility_npi
+    end as encounter_type
+    ,claim_type
+    ,claim_id
+    ,claim_line_number
+    ,patient_id
+    ,claim_start_date
+    ,claim_end_date
+    ,admit_source_code
+    ,admit_type_code
+    ,discharge_disposition_code
+    ,physician_npi
+    ,facility_npi
+    ,ms_drg
+    ,paid_amount
+    ,charge_amount
+    ,bill_type_code
+    ,revenue_center_code
+    ,place_of_service_code
 from {{ var('medical_claim')}}
 where ISNULL(revenue_center_code,'') <> '0001'
-/** Revenue center code 0001 = total of all revenue centers.  Omitting since these do not need to be mapped **/
 ) 
   
   select
@@ -148,8 +158,14 @@ where ISNULL(revenue_center_code,'') <> '0001'
     ,encounter_type
     ,claim_start_date
     ,claim_end_date
+    ,admit_source_code
+    ,admit_type_code
     ,discharge_disposition_code
+    ,physician_npi
     ,facility_npi
+    ,ms_drg
+    ,paid_amount
+    ,charge_amount
     ,bill_type_code
     ,revenue_center_code
     ,place_of_service_code
