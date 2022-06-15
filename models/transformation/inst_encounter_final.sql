@@ -1,3 +1,12 @@
+-------------------------------------------------------------------------------
+-- Author       Thu Xuan Vu
+-- Created      June 2022
+-- Purpose      Bring together encounters for merged and nonmerged claims.
+-------------------------------------------------------------------------------
+-- Modification History
+--
+-------------------------------------------------------------------------------
+
 select
    encounter_id
    ,patient_id

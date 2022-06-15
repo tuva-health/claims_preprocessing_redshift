@@ -1,6 +1,11 @@
-/** Need to find the start of linked claim pairs in order to provide anchor in recursive CTE.
- 	 The start a claim pair is found when claim_id_a does not exist in the previous paid.
-     	The link is broken and indicates the start of a new link.  **/
+-------------------------------------------------------------------------------
+-- Author       Thu Xuan Vu
+-- Created      June 2022
+-- Purpose      Find the start of a claim pair set to use as anchor in recrusive CTE and add it back to the list of claim pairs.
+-------------------------------------------------------------------------------
+-- Modification History
+--
+-------------------------------------------------------------------------------
  
  with master_claim_id as(
  select 

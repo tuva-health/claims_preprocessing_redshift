@@ -1,3 +1,15 @@
+-------------------------------------------------------------------------------
+-- Author       Thu Xuan Vu
+-- Created      June 2022
+-- Purpose      Pair institutional claims that are to be merged.  Only inpatient/continuous stay encounter type are considered.
+-- Notes        Claims are merged if:
+--                - dates overlap and facility is the same
+--                - date is off by no more than 1 day, facility is the same, and previous claim has a discharge status of 30 - still a patient
+-------------------------------------------------------------------------------
+-- Modification History
+--
+-------------------------------------------------------------------------------
+
 with previous_claim as(
   select distinct 
     patient_id
@@ -15,6 +27,7 @@ with previous_claim as(
     ,row_sequence
   from {{ ref('encounter_distinct')}}
   where claim_type = 'I'
+  and encounter_type in ('hospice','acute inpatient','skilled nursing facility','home health')
 )
 ,merge_criteria as(
   select 

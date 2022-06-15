@@ -1,4 +1,12 @@
-/**  This recursive CTE will group paired claims under one id.   **/
+-------------------------------------------------------------------------------
+-- Author       Thu Xuan Vu
+-- Created      June 2022
+-- Purpose      Use recursion to umbrella claim pairs under one id.
+-- Notes        
+-------------------------------------------------------------------------------
+-- Modification History
+--
+-------------------------------------------------------------------------------
 
 with recursive stage (patient_id, group_claim_id, merge_claim_id, depth) as(
     select
