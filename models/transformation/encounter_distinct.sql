@@ -12,6 +12,7 @@ with unique_encounter as(
     select distinct
         claim_type
         ,merge_claim_id
+        ,original_claim_id
         ,patient_id
         ,encounter_type
         ,claim_start_date
@@ -24,6 +25,7 @@ with unique_encounter as(
 select
     claim_type
     ,merge_claim_id
+    ,original_claim_id
     ,patient_id
     ,encounter_type
     ,claim_start_date

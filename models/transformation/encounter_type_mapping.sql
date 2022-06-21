@@ -17,13 +17,13 @@ with encounter_crosswalk as(
   		when revenue_center_code in ('0450','0459') then 'emergency department'
       when left(bill_type_code,2) = '11' then 'acute inpatient'
       when left(bill_type_code,2) = '12' then 'acute inpatient'
-      when left(bill_type_code,2) = '12' then 'skilled nursing facility'
       when left(bill_type_code,2) = '13' then 'outpatient'
       when left(bill_type_code,2) = '14' then 'other'
       when left(bill_type_code,2) = '15' then 'acute inpatient'
       when left(bill_type_code,2) = '16' then 'acute inpatient'
       when left(bill_type_code,2) = '17' then 'acute inpatient'
       when left(bill_type_code,2) = '18' then 'acute inpatient'
+      when left(bill_type_code,2) = '21' then 'skilled nursing facility'
       when left(bill_type_code,2) = '22' then 'skilled nursing facility'
       when left(bill_type_code,2) = '23' then 'skilled nursing facility'
       when left(bill_type_code,2) = '24' then 'skilled nursing facility'
@@ -137,7 +137,8 @@ with encounter_crosswalk as(
     ,admit_source_code
     ,admit_type_code
     ,discharge_disposition_code
-    ,physician_npi
+    ,rendering_npi
+    ,billing_npi
     ,facility_npi
     ,ms_drg
     ,paid_amount
@@ -146,7 +147,7 @@ with encounter_crosswalk as(
     ,revenue_center_code
     ,place_of_service_code
 from {{ var('medical_claim')}}
-where ISNULL(revenue_center_code,'') <> '0001'
+where isnull(revenue_center_code,'') <> '0001'
 ) 
   
   select
@@ -161,7 +162,8 @@ where ISNULL(revenue_center_code,'') <> '0001'
     ,admit_source_code
     ,admit_type_code
     ,discharge_disposition_code
-    ,physician_npi
+    ,rendering_npi
+    ,billing_npi
     ,facility_npi
     ,ms_drg
     ,paid_amount

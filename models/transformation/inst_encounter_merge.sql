@@ -35,7 +35,7 @@ with encounter_dates as(
     ,m.admit_source_code
     ,m.admit_type_code
     ,m.discharge_disposition_code
-    ,m.physician_npi
+    ,m.rendering_npi as physician_npi
     ,m.facility_npi
     ,m.ms_drg
     ,d.paid_amount

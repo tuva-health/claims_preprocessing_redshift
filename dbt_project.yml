@@ -8,8 +8,8 @@ profile: 'default'
 
 vars:
     source_database: tuva         # configuration required (name of the database where your data is stored)
-    source_schema: core      # configuration required (name of the schema where you created staging tables)
-    source_name: core        # configuration required (name of your source dataset e.g. cms_claims)
+    source_schema: claims_preprocessing      # configuration required (name of the schema where you created staging tables)
+    source_name: claims_preprocessing        # configuration required (name of your source dataset e.g. cms_claims)
 
     medical_claim: "{{ source(var('source_name'),'medical_claim') }}"
     eligibility: "{{ source(var('source_name'),'eligibility') }}"
@@ -46,3 +46,6 @@ seeds:
     +database: tuva         
     +schema: terminology
     +tags: terminology
+    discharge_disposition:
+      +column_types:
+        discharge_disposition_code: varchar(2)

@@ -6,6 +6,7 @@
 -- Modification History
 --
 -------------------------------------------------------------------------------
+{{ config(materialized='table') }}
 
 select
    encounter_id
