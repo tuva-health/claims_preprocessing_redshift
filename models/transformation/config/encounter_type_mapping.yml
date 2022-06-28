@@ -4,6 +4,8 @@ models:
     - name: encounter_type_mapping
       description: Mapping of institutional and profession claims at the claim line level to an encounter type
         Institutional claims require bill type and reveue codes.  Professional claims require place of service codes.
+      config:
+        schema: "{{ var('data_set')}}_claims_preprocessing"
       tests:
         - unique:
             column_name: "(merge_claim_id || '-' || claim_line_number)"
@@ -31,10 +33,7 @@ models:
         - name: encounter_type
           description:  The encounter type that has been assigned to the claim line item.
           tests:
-            - not_null
-            - relationships:
-                to: ref('encounter_type')
-                field: description
+            - encounter_type_mapping
         - name: claim_start_date
           description:  The start date of the claim
           tests:
@@ -46,11 +45,16 @@ models:
         - name: discharge_disposition_code
           description:  The discharge status of the patient at the end of the claim (01-home, 30-still a patient, etc)
           tests:
-            - not_null
+            - inst_discharge_disposition_code
+            - relationships:
+                to: ref('revenue_center_code')
+                field: revenue_center_code
+                config:
+                  severity: warn
         - name: facility_npi
           description:  The facility ID on the claim.  Does not have to be the NPI however it needs to be a consistent ID within the claim to ensure linking/merging.
           tests:
-            - not_null
+            - inst_bill_type_code
         - name: bill_type_code
           description:  The 3 digit bill type code on the claim.  Should only be on institutional claims.  Facility type (TOB 1) and classification (TOB 2) required for mapping encounter types.  Frequency (TOB 3) not needed and will be ignored.
           tests:
@@ -62,11 +66,14 @@ models:
             - relationships:
                 to: ref('revenue_center_code')
                 field: revenue_center_code
+                config:
+                  severity: warn
         - name: place_of_service_code
           description:  The 2 digit place of service code on the claim.  Should only appear on professional claims.  Must be 2 digits including leading zero.
-
           tests:
             - prof_place_of_service_code
             - relationships:
                 to: ref('place_of_service')
                 field: place_of_service_code
+                config:
+                  severity: warn

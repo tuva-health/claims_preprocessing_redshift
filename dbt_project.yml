@@ -7,10 +7,11 @@ config-version: 2
 profile: 'default'
 
 vars:
-    source_database: tuva         # configuration required (name of the database where your data is stored)
-    source_schema: claims_preprocessing      # configuration required (name of the schema where you created staging tables)
-    source_name: claims_preprocessing        # configuration required (name of your source dataset e.g. cms_claims)
+    source_database: medicare_saf         # configuration required (name of the database where your data is stored)
+    source_schema: claims_input      # configuration required (name of the schema where you created staging tables)
+    source_name: claims_input        # configuration required (name of your source dataset e.g. cms_claims)
 
+    data_set: cclf
     medical_claim: "{{ source(var('source_name'),'medical_claim') }}"
     eligibility: "{{ source(var('source_name'),'eligibility') }}"
 
@@ -36,7 +37,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   claims_preprocessing:
     +materialized: table
-    +schema: claims_preprocessing
     core:
       +materialized: table
       +schema: core

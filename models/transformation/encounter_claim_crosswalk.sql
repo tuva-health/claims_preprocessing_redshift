@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      Create a crosswalk from encounters, to claim id after encounter type mapping, and to the original claim id.
--- Notes        Row number over encounter type by patient important creates a consistent order by value.
+-- Purpose      Create a crosswalk from encounter_id, to merge_claim_id (claim id after encounter type mapping), to original_claim_id (claim id from source).
+-- Notes        
 -------------------------------------------------------------------------------
 -- Modification History
 --

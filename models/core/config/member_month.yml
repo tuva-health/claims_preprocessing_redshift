@@ -2,7 +2,9 @@ version: 2
 
 models:
     - name: member_month
-      description: Beneficiary enrollment at the member month grain 
+      description: Beneficiary enrollment at the member month grain
+      config:
+        schema: "{{ var('data_set')}}_core"
       tests:
          - unique:
              column_name: "(patient_id || '-' || month || '-' || year)"

@@ -1,0 +1,13 @@
+version: 2
+
+models:
+    - name: procedure
+      description: Procedure list
+      config:
+        schema: "{{ var('data_set')}}_core"
+      tests:
+         - unique:
+             column_name: "(encounter_id || patient_id || procedure_date || code)"
+      columns:
+        - name: patient_id  
+          description: unique identifier

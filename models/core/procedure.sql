@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      
--- Notes        
+-- Purpose      Populate procedures code and dates.
+-- Notes        Using encounter provider since merged claims will have two providers resulting in duplicated procedures.
 -------------------------------------------------------------------------------
 -- Modification History
 --
@@ -15,9 +15,8 @@ with procedure_code as(
 	,patient_id
 	,procedure_code_type as code_type
 	,code
-  	,rendering_npi as physician_npi
 	,cast(replace(procedure,'procedure_code_','') as int) as procedure_sequence
-  from claims_preprocessing.medical_claim_stage
+  from {{ ref('medical_claim_stage')}}
   unpivot(
     code for procedure in (procedure_code_1
 							,procedure_code_2
@@ -51,7 +50,7 @@ with procedure_code as(
     claim_id
     ,procedure_date
     ,cast(replace(procedure,'procedure_date_','') as int) as procedure_sequence
-  from claims_preprocessing.medical_claim_stage
+  from {{ ref('medical_claim_stage')}}
   unpivot(
     procedure_date for procedure in (procedure_date_1
                                             ,procedure_date_2
@@ -81,15 +80,25 @@ with procedure_code as(
             )ppoa
 )
 select distinct 
-	encounter_id
-	,patient_id
-	,procedure_date
-	,code_type
-	,code
-	,null as description
-	,physician_npi
-	,'cclf' as data_source
+	cast(c.encounter_id as varchar) as encounter_id
+	,cast(c.patient_id as varchar) as patient_id
+	,cast(d.procedure_date as date) as procedure_date
+	,cast(case
+      when c.code_type = '0'
+        then 'icd-10 pcs'
+      when c.code_type = '9'
+        then 'icd-9 pcs'
+  end as varchar) as code_type
+	,cast(c.code as varchar) as code
+	,cast(px.short_description as varchar) as description
+	,cast(e.physician_npi as varchar) as physician_npi
+	,cast('{{ var('data_set')}}' as varchar) as data_source
 from procedure_code c
 left join procedure_date d
   ON c.claim_id = d.claim_id
   AND c.procedure_sequence = d.procedure_sequence
+inner join {{ ref('encounter')}} e 
+  on c.encounter_id = e.encounter_id
+left join terminology.icd_10_pcs px
+  on c.code = icd_10_pcs
+  and c.code_type = 0

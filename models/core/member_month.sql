@@ -1,17 +1,18 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      Provide member enrollment at a month/year grain
+-- Purpose      Provide member enrollment at a month/year grain.
 -------------------------------------------------------------------------------
 -- Modification History
 --
 -------------------------------------------------------------------------------
 
 select
-	patient_id
-    ,payer
-    ,month
-    ,year
-    ,dual_status
-    ,medicare_status
+	cast(patient_id as varchar) as patient_id
+    ,cast(payer as varchar) as payer
+    ,cast(month as int) as month
+    ,cast(year as int) as year
+    ,cast(dual_status as varchar) as dual_status
+    ,cast(medicare_status as varchar) as medicare_status
+    ,cast('{{ var('data_set')}}' as varchar) as data_source
 from {{ var('eligibility')}}

@@ -1,8 +1,7 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      
--- Notes        
+-- Purpose      Populate encounter level details.
 -------------------------------------------------------------------------------
 -- Modification History
 --
@@ -13,7 +12,7 @@ with encounter_combined as(
     encounter_id
     ,min(claim_start_date) as encounter_start_date
     ,max(claim_end_date) as encounter_end_date
-    ,sum(paid_amount) as paid_amount
+    ,sum(cast(paid_amount as numeric(38,2))) as paid_amount
     ,sum(charge_amount) as charge_amount
   from {{ ref('medical_claim_stage')}} mc
   group by
@@ -41,24 +40,24 @@ with encounter_combined as(
 )
 
 select distinct
-    s.encounter_id
-    ,s.patient_id
-    ,s.encounter_type
-    ,c.encounter_start_date
-    ,c.encounter_end_date
-    ,first_value(s.admit_source_code) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as admit_source_code
-    ,first_value(s.admit_source_description) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as admit_source_description
-    ,first_value(s.admit_type_code) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as admit_type_code
-    ,first_value(s.admit_type_description) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as admit_type_description
-    ,last_value(s.discharge_disposition_code) over(partition by s.encounter_id order by s.row_sequence_last rows between unbounded preceding and unbounded following) as discharge_disposition_code
-    ,last_value(s.discharge_disposition_description) over(partition by s.encounter_id order by s.row_sequence_last rows between unbounded preceding and unbounded following) as discharge_disposition_description
-    ,first_value(s.physician_npi) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as physician_npi
-    ,s.location
-    ,first_value(s.facility_npi) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as facility_npi
-    ,first_value(s.ms_drg) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as ms_drg
-    ,c.paid_amount
-    ,c.charge_amount
-    ,s.data_source
+    cast(s.encounter_id as varchar) as encounter_id
+    ,cast(s.patient_id as varchar) as patient_id
+    ,cast(s.encounter_type as varchar) as encounter_type
+    ,cast(c.encounter_start_date as date) as encounter_start_date
+    ,cast(c.encounter_end_date as date) as encounter_end_date
+    ,cast(first_value(s.admit_source_code) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as admit_source_code
+    ,cast(first_value(s.admit_source_description) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as admit_source_description
+    ,cast(first_value(s.admit_type_code) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as admit_type_code
+    ,cast(first_value(s.admit_type_description) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as admit_type_description
+    ,cast(last_value(s.discharge_disposition_code) over(partition by s.encounter_id order by s.row_sequence_last rows between unbounded preceding and unbounded following) as varchar) as discharge_disposition_code
+    ,cast(last_value(s.discharge_disposition_description) over(partition by s.encounter_id order by s.row_sequence_last rows between unbounded preceding and unbounded following) as varchar) as discharge_disposition_description
+    ,cast(first_value(s.physician_npi) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as physician_npi
+    ,cast(s.location as varchar) as location
+    ,cast(first_value(s.facility_npi) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as facility_npi
+    ,cast(first_value(s.ms_drg) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as ms_drg
+    ,cast(c.paid_amount as numeric(38,2)) as paid_amount
+    ,cast(c.charge_amount as numeric(38,2)) as charge_amount
+    ,cast(s.data_source as varchar) as data_source
 from encounter_stage s
 inner join encounter_combined c
 	on s.encounter_id = c.encounter_id

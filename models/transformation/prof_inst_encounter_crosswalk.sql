@@ -1,8 +1,10 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      
--- Notes        
+-- Purpose      Crosswalk professional claims to existing institutional encounter.  Matches occur for the same patient, the same encounter type, and overlapping dates.
+-- Notes        Ambigous matches are when a prof claim links to more than one inst encounter.  These claims are omitted.
+--              An example:  An ED prof claim links to two ED inst encounters. The end of one inst encounter is the start of another but they were not merged due to different
+--                  facility NPIs.  Since no other data can help determine which inst encounter the prof claim belongs to, it is not crosswalked.
 -------------------------------------------------------------------------------
 -- Modification History
 --
@@ -15,7 +17,6 @@ with prof_inst_encounter_crosswalk as(
       ,f.encounter_type
       ,f.encounter_start_date
       ,f.encounter_end_date
-      ,f.facility_npi
       ,d.merge_claim_id
       ,d.original_claim_id
       ,d.claim_start_date
@@ -39,6 +40,8 @@ with prof_inst_encounter_crosswalk as(
           when f.encounter_type = 'emergency department' and d.encounter_type = 'emergency department'
               then 1
           when f.encounter_type = 'outpatient rehabilitation' and d.encounter_type = 'outpatient rehabilitation'
+              then 1
+          when f.encounter_type = 'outpatient' and d.encounter_type = 'outpatient'
               then 1
                   else 0
        end as link_flag

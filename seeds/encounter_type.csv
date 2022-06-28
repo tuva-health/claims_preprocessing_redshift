@@ -1,22 +1,18 @@
 description
-"acute inpatient"
-"ambulance"
-"ambulatory surgical center"
-"assisted living facility"
-"dialysis"
-"DME"
-"emergency department"
-"home health"
-"hospice"
-"imaging"
-"intermediate care facility"
-"inpatient psychiatric"
-"inpatient rehab"
-"lab"
-"mental health center"
-"office visit"
-"other"
-"outpatient"
-"skilled nursing facility"
-"substance abuse treatment facility"
-"telehealth"
+acute inpatient
+ambulatory surgical center
+dialysis center
+emergency department
+home health
+hospice
+inpatient psychiatric
+inpatient rehabilitation
+mental health center
+office visit
+other
+outpatient
+outpatient rehabilitation
+skilled nursing facility
+substance abuse treatment facility
+telehealth
+urgent care

@@ -1,8 +1,7 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      
--- Notes        
+-- Purpose      Populate diagnosis and present on admission for a patient using the claim sequence as diagnosis rank. 
 -------------------------------------------------------------------------------
 -- Modification History
 --
@@ -17,7 +16,7 @@ with condition_code as(
     ,diagnosis_code_type as code_type
     ,code
     ,cast(replace(diagnosis_rank,'diagnosis_code_','') as int) diagnosis_rank
-  from claims_preprocessing.medical_claim_stage
+  from {{ ref('medical_claim_stage')}}
   unpivot(
     code for diagnosis_rank in (diagnosis_code_1
                                 ,diagnosis_code_2
@@ -51,7 +50,7 @@ with condition_code as(
     claim_id
     ,present_on_admit
     ,cast(replace(diagnosis_rank,'diagnosis_poa_','') as int) as diagnosis_rank
-  from claims_preprocessing.medical_claim_stage
+  from {{ ref('medical_claim_stage')}}
   unpivot(
     present_on_admit for diagnosis_rank in (diagnosis_poa_1
                                             ,diagnosis_poa_2
@@ -81,17 +80,25 @@ with condition_code as(
             )ppoa
 )
 select distinct
-  c.encounter_id
-  ,c.patient_id
-  ,c.condition_date
+  cast(c.encounter_id as varchar) as encounter_id
+  ,cast(c.patient_id as varchar) as patient_id
+  ,cast(c.condition_date as date) as condition_date
   ,cast('claim' as varchar) as condition_type
-  ,c.code_type
-  ,c.code
-  ,cast(null as varchar) as description
-  ,c.diagnosis_rank
-  ,p.present_on_admit
-  ,cast('cclf' as varchar) as data_source
+  ,cast(case 
+    when c.code_type = '0'
+      then 'icd-10 cm'
+    when c.code_type = '9'
+      then 'icd-9 cm'
+  end as varchar) as code_type
+  ,cast(c.code as varchar) as code
+  ,cast(dx.short_description as varchar) as description
+  ,cast(c.diagnosis_rank as int) as diagnosis_rank
+  ,cast(p.present_on_admit as varchar) as present_on_admit
+  ,cast('{{ var('data_set')}}' as varchar) as data_source
 from condition_code c
 left join condition_poa p
   ON c.claim_id = p.claim_id
   AND c.diagnosis_rank = p.diagnosis_rank
+left join terminology.icd_10_cm dx
+  on c.code = icd_10_cm
+  and c.code_type = 0

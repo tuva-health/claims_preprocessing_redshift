@@ -1,0 +1,7 @@
+version: 2
+
+models:
+    - name: prof_merge_crosswalk
+      description: List of institutional claims pairs that are eligable for merging.
+      config:
+        schema: "{{ var('data_set')}}_claims_preprocessing"

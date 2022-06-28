@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      May 2022
--- Purpose      Map claims to encounter types at the claim line level.  Institutional claims use rev code or bill type, professional claims use place of service.
--- Notes        Revenue code 001 was removed to avoid miscalculation of paid amount.  If a claim is split in two and revenue center 001 is assigned to one of splits,
---              it will add excess dollars to the claim.
+-- Purpose      Map claims to encounter types at the line level.  Institutional claims use rev code or bill type, professional claims use place of service.
+-- Notes        Revenue code 001 is removed to avoid miscalculation of paid amount.  If a claim is split between encounter types, revenue center 001 will map to one.
+--              That will add excess dollars.
 -------------------------------------------------------------------------------
 -- Modification History
 --
@@ -134,15 +134,10 @@ with encounter_crosswalk as(
     ,patient_id
     ,claim_start_date
     ,claim_end_date
-    ,admit_source_code
-    ,admit_type_code
     ,discharge_disposition_code
-    ,rendering_npi
-    ,billing_npi
     ,facility_npi
-    ,ms_drg
-    ,paid_amount
-    ,charge_amount
+    ,cast(paid_amount as numeric(38,4)) as paid_amount
+    ,cast(charge_amount as numeric(38,4)) as charge_amount
     ,bill_type_code
     ,revenue_center_code
     ,place_of_service_code
@@ -151,24 +146,19 @@ where isnull(revenue_center_code,'') <> '0001'
 ) 
   
   select
-    claim_type
-  	,md5(claim_id+encounter_type) as merge_claim_id
-    ,claim_id as original_claim_id
-    ,claim_line_number
-    ,patient_id
-    ,encounter_type
-    ,claim_start_date
-    ,claim_end_date
-    ,admit_source_code
-    ,admit_type_code
-    ,discharge_disposition_code
-    ,rendering_npi
-    ,billing_npi
-    ,facility_npi
-    ,ms_drg
-    ,paid_amount
-    ,charge_amount
-    ,bill_type_code
-    ,revenue_center_code
-    ,place_of_service_code
+    cast(claim_type as varchar) as claim_type
+  	,cast(md5(claim_id+encounter_type) as varchar) as merge_claim_id
+    ,cast(claim_id as varchar) as original_claim_id
+    ,cast(claim_line_number as int) as claim_line_number
+    ,cast(patient_id as varchar) as patient_id
+    ,cast(encounter_type as varchar) as encounter_type
+    ,cast(claim_start_date as date) as claim_start_date
+    ,cast(claim_end_date as date) as claim_end_date
+    ,cast(discharge_disposition_code as varchar) as discharge_disposition_code
+    ,cast(facility_npi as varchar) as facility_npi
+    ,cast(paid_amount as numeric(38,2)) as paid_amount
+    ,cast(charge_amount as numeric(38,2)) as charge_amount
+    ,cast(bill_type_code as varchar) as bill_type_code
+    ,cast(revenue_center_code as varchar) as revenue_center_code
+    ,cast(place_of_service_code as varchar) as place_of_service_code
   from encounter_crosswalk
