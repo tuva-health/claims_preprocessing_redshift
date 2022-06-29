@@ -146,7 +146,7 @@ select
   ,cast(m.procedure_date_23 as varchar) as procedure_date_23
   ,cast(m.procedure_date_24 as varchar) as procedure_date_24
   ,cast(m.procedure_date_25 as varchar) as procedure_date_25
-  ,cast('{{ var('data_set')}}' as varchar) as data_source
+  ,cast('{{ var('source_name')}}' as varchar) as data_source
 from {{ var('medical_claim')}} m
 inner join {{ ref('encounter_type_mapping')}} e
 	on m.claim_id = e.original_claim_id

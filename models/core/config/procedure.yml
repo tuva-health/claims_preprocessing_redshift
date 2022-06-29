@@ -4,7 +4,7 @@ models:
     - name: procedure
       description: Procedure list
       config:
-        schema: "{{ var('data_set')}}_core"
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
       tests:
          - unique:
              column_name: "(encounter_id || patient_id || procedure_date || code)"

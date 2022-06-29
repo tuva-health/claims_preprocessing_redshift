@@ -4,4 +4,4 @@ models:
     - name: encounter_claim_crosswalk
       description: A crosswalk between encounter_id, new claim id, and original claim id
       config:
-        schema: "{{ var('data_set')}}_claims_preprocessing"
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"

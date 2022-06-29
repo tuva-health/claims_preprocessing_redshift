@@ -4,7 +4,7 @@ models:
     - name: inst_merge_final
       description: Encounter details
       config:
-        schema: "{{ var('data_set')}}_claims_preprocessing"
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
       tests:
          - unique:
              column_name: "claim_id_b"

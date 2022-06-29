@@ -94,7 +94,7 @@ select distinct
   ,cast(dx.short_description as varchar) as description
   ,cast(c.diagnosis_rank as int) as diagnosis_rank
   ,cast(p.present_on_admit as varchar) as present_on_admit
-  ,cast('{{ var('data_set')}}' as varchar) as data_source
+  ,cast('{{ var('source_name')}}' as varchar) as data_source
 from condition_code c
 left join condition_poa p
   ON c.claim_id = p.claim_id

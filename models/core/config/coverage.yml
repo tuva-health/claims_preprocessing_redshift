@@ -4,7 +4,7 @@ models:
     - name: coverage
       description: Coverage details
       config:
-        schema: "{{ var('data_set')}}_core"
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
       tests:
          - unique:
              column_name: "(patient_id || payer || coverage_start_date || coverage_end_date)"

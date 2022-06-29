@@ -4,7 +4,7 @@ models:
     - name: inst_encounter_nonmerge
       description: Crosswalk of claim ids to a master grouper (encounter id)
       config:
-        schema: "{{ var('data_set')}}_claims_preprocessing"
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
       columns:
         - name: encounter_id
           description:  Unique identifer for the encounter and primary key

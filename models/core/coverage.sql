@@ -14,7 +14,7 @@ select
     ,cast(max(cast(month as varchar) + '-01-' + cast(year as varchar)) as date) as coverage_end_date
     ,cast(payer as varchar) as payer
     ,cast(payer_type as varchar) as payer_type
-    ,cast('{{ var('data_set')}}' as varchar) as data_source
+    ,cast('{{ var('source_name')}}' as varchar) as data_source
 from {{ var('eligibility')}}
 group by 
     patient_id

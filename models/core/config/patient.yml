@@ -4,7 +4,7 @@ models:
     - name: patient
       description: Unique list of patients and demographics
       config:
-        schema: "{{ var('data_set')}}_core"
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
       columns:
         - name: patient_id
           description: Member unique identifier

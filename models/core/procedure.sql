@@ -92,7 +92,7 @@ select distinct
 	,cast(c.code as varchar) as code
 	,cast(px.short_description as varchar) as description
 	,cast(e.physician_npi as varchar) as physician_npi
-	,cast('{{ var('data_set')}}' as varchar) as data_source
+	,cast('{{ var('source_name')}}' as varchar) as data_source
 from procedure_code c
 left join procedure_date d
   ON c.claim_id = d.claim_id

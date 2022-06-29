@@ -31,6 +31,6 @@ select
     ,cast(state as varchar) as state
     ,cast(deceased_flag as int) as deceased_flag
     ,cast(death_date as date) as death_date
-    ,cast('{{ var('data_set')}}' as varchar) as data_source
+    ,cast('{{ var('source_name')}}' as varchar) as data_source
 from patient_stage
 where row_sequence = 1

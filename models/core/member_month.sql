@@ -14,5 +14,5 @@ select
     ,cast(year as int) as year
     ,cast(dual_status as varchar) as dual_status
     ,cast(medicare_status as varchar) as medicare_status
-    ,cast('{{ var('data_set')}}' as varchar) as data_source
+    ,cast('{{ var('source_name')}}' as varchar) as data_source
 from {{ var('eligibility')}}

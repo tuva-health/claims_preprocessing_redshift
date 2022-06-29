@@ -4,7 +4,7 @@ models:
     - name: inst_merge_crosswalk
       description: Crosswalk of claim ids to a master grouper (encounter id)
       config:
-        schema: "{{ var('data_set')}}_claims_preprocessing"
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
       columns:
         - name: merge_claim_id
           tests:

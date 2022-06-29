@@ -4,4 +4,4 @@ models:
     - name: prof_inst_encounter_crosswalk
       description: List of institutional claims pairs that are eligable for merging.
       config:
-        schema: "{{ var('data_set')}}_claims_preprocessing"
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
