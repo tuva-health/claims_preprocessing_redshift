@@ -99,6 +99,6 @@ left join procedure_date d
   AND c.procedure_sequence = d.procedure_sequence
 inner join {{ ref('encounter')}} e 
   on c.encounter_id = e.encounter_id
-left join terminology.icd_10_pcs px
+left join {{ ref('icd_10_pcs')}} px
   on c.code = icd_10_pcs
   and c.code_type = 0

@@ -48,16 +48,4 @@ models:
     +materialized: table
     core:
       +materialized: table
-      +schema: core
 
-seeds:
-  claims_preprocessing:
-    discharge_disposition:
-      +column_types:
-        discharge_disposition_code: varchar(2)
-    place_of_service:
-      +column_types:
-        place_of_service_code: varchar(2)
-    revenue_center:
-      +column_types:
-        revenue_center_code: varchar(4)
