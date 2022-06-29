@@ -83,12 +83,12 @@ select distinct
   cast(c.encounter_id as varchar) as encounter_id
   ,cast(c.patient_id as varchar) as patient_id
   ,cast(c.condition_date as date) as condition_date
-  ,cast('claim' as varchar) as condition_type
+  ,cast('discharge diagnosis' as varchar) as condition_type
   ,cast(case 
     when c.code_type = '0'
-      then 'icd-10 cm'
+      then 'icd-10-cm'
     when c.code_type = '9'
-      then 'icd-9 cm'
+      then 'icd-9-cm'
   end as varchar) as code_type
   ,cast(c.code as varchar) as code
   ,cast(dx.short_description as varchar) as description

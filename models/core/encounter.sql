@@ -33,7 +33,7 @@ with encounter_combined as(
     ,cast(null as varchar) as location
     ,mc.facility_npi
     ,mc.ms_drg
-    ,cast('cclf' as varchar) as data_source
+    ,cast('{{ var('data_set')}}' as varchar) as data_source
     ,row_number() over (partition by mc.encounter_id order by mc.claim_line_number, mc.claim_start_date) as row_sequence_first
     ,row_number() over (partition by mc.encounter_id order by mc.claim_line_number, mc.claim_end_date) as row_sequence_last
   from {{ ref('medical_claim_stage')}} mc

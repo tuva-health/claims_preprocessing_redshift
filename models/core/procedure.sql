@@ -85,9 +85,9 @@ select distinct
 	,cast(d.procedure_date as date) as procedure_date
 	,cast(case
       when c.code_type = '0'
-        then 'icd-10 pcs'
+        then 'icd-10-pcs'
       when c.code_type = '9'
-        then 'icd-9 pcs'
+        then 'icd-9-pcs'
   end as varchar) as code_type
 	,cast(c.code as varchar) as code
 	,cast(px.short_description as varchar) as description
