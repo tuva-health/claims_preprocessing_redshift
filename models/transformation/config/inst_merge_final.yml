@@ -1,0 +1,13 @@
+version: 2
+
+models:
+    - name: inst_merge_final
+      description: Encounter details
+      config:
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
+      tests:
+         - unique:
+             column_name: "claim_id_b"
+      columns:
+        - name: patient_id  
+          description: unique identifier

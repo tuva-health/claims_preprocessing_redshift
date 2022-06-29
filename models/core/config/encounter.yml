@@ -1,0 +1,15 @@
+version: 2
+
+models:
+    - name: encounter
+      description: Encounter details
+      config:
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
+      columns:
+        - name: encounter_id
+          description: Unique identifier
+          tests:
+            - unique
+            - not_null
+        - name: patient_id  
+          description: unique identifier

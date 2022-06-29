@@ -2,21 +2,21 @@
 
 # Claim Preprocessing
 
-Check out the [Claims Preprocessing Google Sheet](https://docs.google.com/spreadsheets/d/1TMMM1u8GTdWqxGcHALRtGMjcxBXQwBbWUW8pHL66W_E/edit#gid=245639858)
+Check out the [Claims Preprocessing Data Model](https://docs.google.com/spreadsheets/d/1NuMEhcx6D6MSyZEQ6yk0LWU0HLvaeVma8S-5zhOnbcE/edit#gid=1120321085)
 
 Check out our [Docs](http://thetuvaproject.com/)
 
-Our claims pre-processing engine starts from an input layer containing standard data elements from raw claims datasets and processes the claims to make them useful for analysis.  It is done by:
+Claims pre-processing enhances data to make it useful for analytics.  It is done by:
 
-- Doing adjustments and reversals
-- Assigning encounter types to individual claim lines based on logic involving Bill Type Code, Place of Service Code, Revenue Code, etc. (we defined a list of ~20 encounter types that are relevant for downstream analytics, for example: acute inpatient, office visit, ED, SNF, home health, dialysis, telehealth, hospice, etc.)
-- Grouping individual claims into encounters (this involves logic to, for example, merge claims with overlapping dates or adjacent dates into a single inpatient stay)
-- Rolling up professional claims into encounters defined from merged institutional claims
+- Assigning encounter types to individual claim lines based on the bill type code and or revenue code of institutional claims and the place of service code of professional claims.
+- Grouping individual claims into encounters (this involves logic to, for example, merge claims with overlapping dates or adjacent dates into a single inpatient stay).
+- Crosswalk professional claims to institutional encounters.
 
 
 ## Pre-requisites
 1. You have claims data (CCLF, SAF, commercial) in a data warehouse mapped to the Tuva input layer (reference Google sheet linked above)
-    - The input layer is at a claim line level
+    - The claim input layer is at a claim line level and each claim id and claim line number is unique
+    - The eligibility file is unique at the month/year grain per patient
     - Revenue code is 4 digits in length
 2. You have [dbt](https://www.getdbt.com/) installed and configured (i.e. connected to your data warehouse)
 
@@ -44,4 +44,4 @@ and running the package? If so, we highly encourage and welcome contributions to
 Join the conversation on [Slack](https://tuvahealth.slack.com/ssb/redirect#/shared-invite/email)!  We'd love to hear from you on the #claims-preprocessing channel.
 
 ## Database Support
-This package has been tested on Redshift.  We are planning to expand testing to BigQuery in the near future.
+This package has been tested on Redshift.  We are planning to expand testing to BigQuery and Snowflake in the near future.

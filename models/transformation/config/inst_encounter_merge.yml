@@ -1,8 +1,10 @@
 version: 2
 
 models:
-    - name: inst_encounter_final
-      description: All encounters for institutional claims.
+    - name: inst_encounter_merge
+      description: Creation of encounter for merged institutional claims
+      config:
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
       columns:
         - name: encounter_id
           description:  Unique identifer for the encounter and primary key

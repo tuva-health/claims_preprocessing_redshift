@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      Create a list of unique claims based on the encounter type for downstream merging.
--- Notes        Row number over encounter type by patient important creates a consistent order by value.
+-- Purpose      Create a list of unique claims for downstream merging.
+-- Notes        Row number over encounter type and patient is important to create a consistent order by value for downstream processing.
 -------------------------------------------------------------------------------
 -- Modification History
 --
@@ -12,6 +12,7 @@ with unique_encounter as(
     select distinct
         claim_type
         ,merge_claim_id
+        ,original_claim_id
         ,patient_id
         ,encounter_type
         ,claim_start_date
@@ -24,6 +25,7 @@ with unique_encounter as(
 select
     claim_type
     ,merge_claim_id
+    ,original_claim_id
     ,patient_id
     ,encounter_type
     ,claim_start_date

@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: "{{ var('source_name') }}"
+    database: "{{ var('input_database') }}"
+    schema:  "{{ var('input_schema') }}"
+    tables:
+      - name: medical_claim
+      - name: eligibility
+seeds:
+  - name: claims_preproessing
+    config:
+      database:  "{{ var('output_database') }}"
+      schema:  "{{ var('output_schema') }}"
+      tags: terminology

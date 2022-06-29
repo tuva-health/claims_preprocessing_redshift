@@ -7,11 +7,22 @@ config-version: 2
 profile: 'default'
 
 vars:
-    source_database: tuva         # configuration required (name of the database where your data is stored)
-    source_schema: core      # configuration required (name of the schema where you created staging tables)
-    source_name: core        # configuration required (name of your source dataset e.g. cms_claims)
+  source_name: cclf                     # configuration required
+                                        # name describing the dataset feeding this project
 
-    medical_claim: "{{ source(var('source_name'),'medical_claim') }}"
+  input_database: medicare_saf          # configuration required
+                                        # name of the database where sources feeding this project are stored
+
+  input_schema: claims_input            # configuration required
+                                        # name of the schema where sources feeding this project is stored
+
+  output_database: tuva                 # configuration required
+                                        # name of the database where output of this project should be written
+
+  output_schema: claims_preprocessing   # configuration required
+                                        # name of the schema where output of this project should be written
+  medical_claim: "{{ source(var('source_name'),'medical_claim') }}"
+  eligibility: "{{ source(var('source_name'),'eligibility') }}"
 
 # These configurations specify where dbt should look for different types of files.
 # The `source-paths` config, for example, states that models in this project can be
@@ -34,10 +45,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   claims_preprocessing:
+    +materialized: table
+    core:
       +materialized: table
-      +schema: claims_preprocessing
+      +schema: core
+
 seeds:
   claims_preprocessing:
-    +database: tuva         
-    +schema: terminology
-    +tags: terminology
+    discharge_disposition:
+      +column_types:
+        discharge_disposition_code: varchar(2)
+    place_of_service:
+      +column_types:
+        place_of_service_code: varchar(2)
+    revenue_center:
+      +column_types:
+        revenue_center_code: varchar(4)

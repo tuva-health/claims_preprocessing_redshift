@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      Pair institutional claims that are to be merged.  Only inpatient/continuous stay encounter type are considered.
--- Notes        Claims are merged if:
---                - dates overlap and facility is the same
+-- Purpose      Compare institutional claims chronogically to evaluate relationship.  Only inpatient/continuous stay encounter types are evaulated for merging.
+-- Notes        Claims for a patient are merged if:
+--                - dates overlap and the facility is the same
 --                - date is off by no more than 1 day, facility is the same, and previous claim has a discharge status of 30 - still a patient
 -------------------------------------------------------------------------------
 -- Modification History

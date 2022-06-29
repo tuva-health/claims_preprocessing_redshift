@@ -1,42 +1,30 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      Bring together encounters for merged and nonmerged claims.
+-- Purpose      Bring together encounters for merged and nonmerged institutional claims.
 -------------------------------------------------------------------------------
 -- Modification History
 --
 -------------------------------------------------------------------------------
 
 select
-   encounter_id
-   ,patient_id
-   ,encounter_type
-   ,encounter_start_date
-   ,encounter_end_date
-   ,admit_source_code
-   ,admit_type_code
-   ,discharge_disposition_code
-   ,physician_npi
-   ,facility_npi
-   ,ms_drg
-   ,paid_amount
-   ,charge_amount
+   cast(encounter_id as varchar) as encounter_id
+   ,cast(patient_id as varchar) as patient_id
+   ,cast(encounter_type as varchar) as encounter_type
+   ,cast(encounter_start_date as date) as encounter_start_date
+   ,cast(encounter_end_date as date) as encounter_end_date
+   ,cast(paid_amount as numeric(38,2)) as paid_amount
+   ,cast(charge_amount as numeric(38,2)) as charge_amount
 from {{ ref('inst_encounter_merge')}}
 
-union all 
+union all
 
 select
-   encounter_id
-   ,patient_id
-   ,encounter_type
-   ,encounter_start_date
-   ,encounter_end_date
-   ,admit_source_code
-   ,admit_type_code
-   ,discharge_disposition_code
-   ,physician_npi
-   ,facility_npi
-   ,ms_drg
-   ,paid_amount
-   ,charge_amount
+   cast(encounter_id as varchar) as encounter_id
+   ,cast(patient_id as varchar) as patient_id
+   ,cast(encounter_type as varchar) as encounter_type
+   ,cast(encounter_start_date as date) as encounter_start_date
+   ,cast(encounter_end_date as date) as encounter_end_date
+   ,cast(paid_amount as numeric(38,2)) as paid_amount
+   ,cast(charge_amount as numeric(38,2)) as charge_amount
 from {{ ref('inst_encounter_nonmerge')}}
