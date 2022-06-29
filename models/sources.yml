@@ -7,9 +7,3 @@ sources:
     tables:
       - name: medical_claim
       - name: eligibility
-seeds:
-  - name: claims_preproessing
-    config:
-      database:  "{{ var('output_database') }}"
-      schema:  "{{ var('output_schema') }}"
-      tags: terminology

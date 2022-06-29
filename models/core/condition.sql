@@ -99,6 +99,6 @@ from condition_code c
 left join condition_poa p
   ON c.claim_id = p.claim_id
   AND c.diagnosis_rank = p.diagnosis_rank
-left join terminology.icd_10_cm dx
+left join {{ ref('icd_10_cm')}} dx
   on c.code = icd_10_cm
   and c.code_type = 0
