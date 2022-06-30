@@ -7,13 +7,13 @@ config-version: 2
 profile: 'default'
 
 vars:
-  source_name: cclf                     # configuration required
+  source_name:                      # configuration required
                                         # name describing the dataset feeding this project
 
-  input_database: medicare_saf          # configuration required
+  input_database:           # configuration required
                                         # name of the database where sources feeding this project are stored
 
-  input_schema: claims_input            # configuration required
+  input_schema:             # configuration required
                                         # name of the schema where sources feeding this project is stored
 
   output_database: tuva                 # configuration required
