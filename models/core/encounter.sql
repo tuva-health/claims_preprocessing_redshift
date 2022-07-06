@@ -1,63 +1,31 @@
 -------------------------------------------------------------------------------
 -- Author       Thu Xuan Vu
 -- Created      June 2022
--- Purpose      Populate encounter level details.
+-- Purpose      Populate encounter level details with insitutional data elements taking priority.
 -------------------------------------------------------------------------------
 -- Modification History
---
+-- TXV 07/2022  Resolving bug that was omitting inst elemts (discharge disp, admit type)
+--              due to prof claim link and logic.
 -------------------------------------------------------------------------------
 
-with encounter_combined as(
-  select 
-    encounter_id
-    ,min(claim_start_date) as encounter_start_date
-    ,max(claim_end_date) as encounter_end_date
-    ,sum(cast(paid_amount as numeric(38,2))) as paid_amount
-    ,sum(charge_amount) as charge_amount
-  from {{ ref('medical_claim_stage')}} mc
-  group by
-      encounter_id
-)
-, encounter_stage as(
-  select
-    mc.encounter_id
-    ,mc.patient_id
-    ,mc.encounter_type
-    ,mc.admit_source_code
-    ,mc.admit_source_description
-    ,mc.admit_type_code
-    ,mc.admit_type_description
-    ,mc.discharge_disposition_code
-    ,mc.discharge_disposition_description
-    ,mc.rendering_npi as physician_npi
-    ,cast(null as varchar) as location
-    ,mc.facility_npi
-    ,mc.ms_drg
-    ,cast('{{ var('source_name')}}' as varchar) as data_source
-    ,row_number() over (partition by mc.encounter_id order by mc.claim_line_number, mc.claim_start_date) as row_sequence_first
-    ,row_number() over (partition by mc.encounter_id order by mc.claim_line_number, mc.claim_end_date) as row_sequence_last
-  from {{ ref('medical_claim_stage')}} mc
-)
-
 select distinct
-    cast(s.encounter_id as varchar) as encounter_id
-    ,cast(s.patient_id as varchar) as patient_id
-    ,cast(s.encounter_type as varchar) as encounter_type
-    ,cast(c.encounter_start_date as date) as encounter_start_date
-    ,cast(c.encounter_end_date as date) as encounter_end_date
-    ,cast(first_value(s.admit_source_code) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as admit_source_code
-    ,cast(first_value(s.admit_source_description) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as admit_source_description
-    ,cast(first_value(s.admit_type_code) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as admit_type_code
-    ,cast(first_value(s.admit_type_description) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as admit_type_description
-    ,cast(last_value(s.discharge_disposition_code) over(partition by s.encounter_id order by s.row_sequence_last rows between unbounded preceding and unbounded following) as varchar) as discharge_disposition_code
-    ,cast(last_value(s.discharge_disposition_description) over(partition by s.encounter_id order by s.row_sequence_last rows between unbounded preceding and unbounded following) as varchar) as discharge_disposition_description
-    ,cast(first_value(s.physician_npi) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as physician_npi
-    ,cast(s.location as varchar) as location
-    ,cast(first_value(s.facility_npi) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as facility_npi
-    ,cast(first_value(s.ms_drg) over(partition by s.encounter_id order by s.row_sequence_first rows between unbounded preceding and unbounded following) as varchar) as ms_drg
-    ,cast(c.paid_amount as numeric(38,2)) as paid_amount
-    ,cast(c.charge_amount as numeric(38,2)) as charge_amount
-    ,cast(s.data_source as varchar) as data_source
-from encounter_stage s
-inner join encounter_combined c
-	on s.encounter_id = c.encounter_id
+  coalesce(i.encounter_id, p.encounter_id) as encounter_id
+  ,coalesce(i.patient_id, p.patient_id) as patient_id
+  ,coalesce(i.encounter_type, p.encounter_type) as encounter_type
+  ,coalesce(i.encounter_start_date, p.encounter_start_date) as encounter_start_date
+  ,coalesce(i.encounter_end_date, p.encounter_end_date) as encounter_end_date
+  ,coalesce(i.admit_source_code, p.admit_source_code) as admit_source_code
+  ,coalesce(i.admit_source_description, p.admit_source_description) as admit_source_description
+  ,coalesce(i.admit_type_code, p.admit_type_code) as admit_type_code
+  ,coalesce(i.admit_type_description, p.admit_type_description) as admit_type_description
+  ,coalesce(i.discharge_disposition_code, p.discharge_disposition_code) as discharge_disposition_code
+  ,coalesce(i.discharge_disposition_description, p.discharge_disposition_description) as discharge_disposition_description
+  ,coalesce(i.physician_npi, p.physician_npi) as physician_npi
+  ,coalesce(i.location, p.location) as location
+  ,coalesce(i.facility_npi, p.facility_npi) as facility_npi
+  ,coalesce(i.ms_drg, p.ms_drg) as ms_drg
+  ,coalesce(i.paid_amount, p.paid_amount) as paid_amount
+  ,coalesce(i.charge_amount, p.charge_amount) as charge_amount
+from cclf_claims_preprocessing.encounter_inst_stage i
+full outer join cclf_claims_preprocessing.encounter_prof_stage p
+  on i.encounter_id = p.encounter_id

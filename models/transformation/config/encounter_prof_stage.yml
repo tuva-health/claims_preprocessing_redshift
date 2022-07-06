@@ -1,0 +1,13 @@
+version: 2
+
+models:
+    - name: encounter_prof_stage
+      description: Encounter level data elements for profession claims
+      config:
+        schema: "{{ var('source_name')}}_{{ var('output_schema')}}"
+      columns:
+        - name: encounter_id
+          description: Unique identifier
+          tests:
+            - unique
+            - not_null
