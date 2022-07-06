@@ -7,13 +7,13 @@ config-version: 2
 profile: 'default'
 
 vars:
-  source_name:                      # configuration required
+  source_name: cclf                     # configuration required
                                         # name describing the dataset feeding this project
 
-  input_database:           # configuration required
+  input_database: medicare_cclf         # configuration required
                                         # name of the database where sources feeding this project are stored
 
-  input_schema:             # configuration required
+  input_schema: claims_input            # configuration required
                                         # name of the schema where sources feeding this project is stored
 
   output_database: tuva                 # configuration required
@@ -21,6 +21,7 @@ vars:
 
   output_schema: claims_preprocessing   # configuration required
                                         # name of the schema where output of this project should be written
+                                        
   medical_claim: "{{ source(var('source_name'),'medical_claim') }}"
   eligibility: "{{ source(var('source_name'),'eligibility') }}"
 
