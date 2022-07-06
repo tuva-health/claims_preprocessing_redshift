@@ -1,45 +1,54 @@
 [![Apache License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) ![dbt logo and version](https://img.shields.io/static/v1?logo=dbt&label=dbt-version&message=1.x&color=orange)
 
-# Claim Preprocessing
+# Claims Preprocessing
 
 Check out the [Claims Preprocessing Data Model](https://docs.google.com/spreadsheets/d/1NuMEhcx6D6MSyZEQ6yk0LWU0HLvaeVma8S-5zhOnbcE/edit#gid=1120321085)
 
 Check out our [Docs](http://thetuvaproject.com/)
 
-Claims pre-processing enhances data to make it useful for analytics.  It is done by:
+Claims preprocessing enhances medical claims data to make it useful for analytics.  It is done by:
 
-- Assigning encounter types to individual claim lines based on the bill type code and or revenue code of institutional claims and the place of service code of professional claims.
-- Grouping individual claims into encounters (this involves logic to, for example, merge claims with overlapping dates or adjacent dates into a single inpatient stay).
+- Assigning encounter types to individual claim lines based on the bill type code and or revenue code of institutional claims 
+and the place of service code of professional claims.
+- Grouping individual claims into encounters (this involves logic to, for example, merge claims with overlapping dates or 
+adjacent dates into a single inpatient stay).
 - Crosswalk professional claims to institutional encounters.
 
 
 ## Pre-requisites
 1. You have claims data (CCLF, SAF, commercial) in a data warehouse mapped to the Tuva input layer (reference Google sheet linked above)
     - The claim input layer is at a claim line level and each claim id and claim line number is unique
-    - The eligibility file is unique at the month/year grain per patient
+    - The eligibility file is unique at the month/year grain per patient and payor
     - Revenue code is 4 digits in length
 2. You have [dbt](https://www.getdbt.com/) installed and configured (i.e. connected to your data warehouse)
 
 [Here](https://docs.getdbt.com/dbt-cli/installation) are instructions for installing dbt.
 
-## Configuration
-Execute the following steps to load all seed files, build all data marts, and run all data quality tests in your data warehouse:
+## Getting Started
+Complete the following steps to configure the package to run in your environment.
 
 1. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) this repo to your local machine or environment
 2. Create a database called 'tuva' in your data warehouse
-    - note: this is where data from the project will be generated
-3. Create source data tables in your data warehouse
-    - note: these tables must match table names and column names exactly as in [source.yml](models/source.yml)
-4. Configure [dbt_project.yml](/dbt_project.yml)
-    - profile: set to 'tuva' by default - change this to an active profile in the profile.yml file that connects to your data warehouse
-    - vars: configure source_name, source database name, and source schema name
-5. Run project
-    1. Navigate to the project directory in the command line
-    2. Execute "dbt build" to create all tables/views in your data warehouse
+    - Note: this is optional, see step 4 for further detail
+3. Configure [dbt_project.yml](/dbt_project.yml)
+    - Fill in vars (variables):
+        - source_name - description of the dataset feeding this project
+        - input_database - database where sources feeding this project are stored
+        - input_schema - schema where sources feeding this project is stored
+        - output_database - database where output of this project should be written.  
+        We suggest using the Tuva database but any database will work.
+        - output_schema - name of the schema where output of this project should be written
+4. Review [sources.yml](/sources.yml)
+The table names listed are the same as in the Tuva data model (linked above).  If you decided to rename these tables:
+    - Update table names in sources.yml
+    - Update table name in medical_claim and eligibility jinja function
+
+5. Execute `dbt build` to load seed files, run models, and perform tests.  
+    - Note: The pipeline will stops
 
 ## Contributions
-Have an opinion on the mappings? Notice any bugs when installing 
-and running the package? If so, we highly encourage and welcome contributions to this package! 
+Have an opinion on the mappings? Notice any bugs when installing and running the package? 
+If so, we highly encourage and welcome contributions! 
 
 Join the conversation on [Slack](https://tuvahealth.slack.com/ssb/redirect#/shared-invite/email)!  We'd love to hear from you on the #claims-preprocessing channel.
 
