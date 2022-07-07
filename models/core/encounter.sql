@@ -26,6 +26,7 @@ select distinct
   ,coalesce(i.ms_drg, p.ms_drg) as ms_drg
   ,coalesce(i.paid_amount, p.paid_amount) as paid_amount
   ,coalesce(i.charge_amount, p.charge_amount) as charge_amount
-from cclf_claims_preprocessing.encounter_inst_stage i
-full outer join cclf_claims_preprocessing.encounter_prof_stage p
+  ,coalesce(i.data_source, p.data_source) as data_source
+from {{ ref('encounter_inst_stage')}} i
+full outer join {{ ref('encounter_prof_stage')}} p
   on i.encounter_id = p.encounter_id
