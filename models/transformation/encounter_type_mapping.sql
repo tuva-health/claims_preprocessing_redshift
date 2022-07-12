@@ -142,12 +142,12 @@ with encounter_crosswalk as(
     ,revenue_center_code
     ,place_of_service_code
 from {{ var('medical_claim')}}
-where isnull(revenue_center_code,'') <> '0001'
+where ifnull(revenue_center_code,'') <> '0001'
 ) 
   
   select
     cast(claim_type as varchar) as claim_type
-  	,cast(md5(claim_id+encounter_type) as varchar) as merge_claim_id
+  	,cast(md5(claim_id||encounter_type) as varchar) as merge_claim_id
     ,cast(claim_id as varchar) as original_claim_id
     ,cast(claim_line_number as int) as claim_line_number
     ,cast(patient_id as varchar) as patient_id
