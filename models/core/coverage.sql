@@ -10,8 +10,8 @@
 
 select 
     cast(patient_id as varchar) as patient_id
-    ,cast(min(cast(month as varchar) + '-01-' + cast(year as varchar)) as date) as coverage_start_date
-    ,cast(max(cast(month as varchar) + '-01-' + cast(year as varchar)) as date) as coverage_end_date
+    ,date(min(cast(year as varchar) ||'-'|| cast(month as varchar) || '-01')) as coverage_start_date
+    ,date(max(cast(year as varchar) ||'-'|| cast(month as varchar) || '-01')) as coverage_end_date
     ,cast(payer as varchar) as payer
     ,cast(payer_type as varchar) as payer_type
     ,cast('{{ var('source_name')}}' as varchar) as data_source

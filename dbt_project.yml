@@ -10,7 +10,7 @@ vars:
   source_name: cclf                     # configuration required
                                         # name describing the dataset feeding this project
 
-  input_database: medicare_cclf         # configuration required
+  input_database: tuva         # configuration required
                                         # name of the database where sources feeding this project are stored
 
   input_schema: claims_input            # configuration required
