@@ -102,3 +102,4 @@ left join condition_poa p
 left join {{ ref('icd_10_cm')}} dx
   on c.code = icd_10_cm
   and c.code_type = 0
+where code <> ''
