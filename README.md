@@ -2,7 +2,7 @@
 
 # Claims Preprocessing
 
-Check out the [Claims Preprocessing Data Model](https://docs.google.com/spreadsheets/d/1NuMEhcx6D6MSyZEQ6yk0LWU0HLvaeVma8S-5zhOnbcE/edit#gid=1120321085)
+Check out the [Claims Preprocessing Data Model](https://docs.google.com/spreadsheets/d/1NuMEhcx6D6MSyZEQ6yk0LWU0HLvaeVma8S-5zhOnbcE/edit#gid=1991587675)
 
 Check out our [Docs](http://thetuvaproject.com/)
 
