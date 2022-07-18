@@ -90,7 +90,7 @@ select distinct
     when c.code_type = '9'
       then 'icd-9-cm'
   end as varchar) as code_type
-  ,cast(c.code as varchar) as code
+  ,cast(replace(c.code,'.','') as varchar) as code
   ,cast(dx.short_description as varchar) as description
   ,cast(c.diagnosis_rank as int) as diagnosis_rank
   ,cast(p.present_on_admit as varchar) as present_on_admit
