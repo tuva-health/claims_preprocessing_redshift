@@ -15,6 +15,7 @@ with encounter_crosswalk as(
   select
     case
   		when revenue_center_code in ('0450','0459') then 'emergency department'
+      when revenue_center_code in ('0450','0459') then 'emergency department'
       when left(bill_type_code,2) = '11' then 'acute inpatient'
       when left(bill_type_code,2) = '12' then 'acute inpatient'
       when left(bill_type_code,2) = '13' then 'outpatient'
