@@ -44,7 +44,7 @@ select
     ,cast(previous_discharge_disposition_code as varchar) as previous_discharge_disposition_code
     ,cast(discharge_disposition_code as varchar) as discharge_disposition_code
 from master_claim_id
-where ifnull(previous_claim, 'start') <> claim_id_a
+where isnull(previous_claim, 'start') <> claim_id_a
 
 union all 
 

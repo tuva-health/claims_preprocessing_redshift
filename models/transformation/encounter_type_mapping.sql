@@ -142,7 +142,7 @@ with encounter_crosswalk as(
     ,revenue_center_code
     ,place_of_service_code
 from {{ var('medical_claim')}}
-where ifnull(revenue_center_code,'') <> '0001'
+where isnull(revenue_center_code,'') <> '0001'
 ) 
   
   select
