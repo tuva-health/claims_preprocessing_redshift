@@ -10,12 +10,12 @@
 
 with procedure_code as(
   select
-	encounter_id
-	,claim_id
-	,patient_id
-	,procedure_code_type as code_type
-	,code
-	,cast(replace(procedure,'PROCEDURE_CODE_','') as int) as procedure_sequence
+    encounter_id
+    ,claim_id
+    ,patient_id
+    ,procedure_code_type as code_type
+    ,code
+    ,cast(replace(procedure,'procedure_code_','') as int) as procedure_sequence
   from {{ ref('medical_claim_stage')}}
   unpivot(
     code for procedure in (procedure_code_1
@@ -49,7 +49,7 @@ with procedure_code as(
   select 
     claim_id
     ,procedure_date
-    ,cast(replace(procedure,'PROCEDURE_DATE_','') as int) as procedure_sequence
+    ,cast(replace(procedure,'procedure_date_','') as int) as procedure_sequence
   from {{ ref('medical_claim_stage')}}
   unpivot(
     procedure_date for procedure in (procedure_date_1

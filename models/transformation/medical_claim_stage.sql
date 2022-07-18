@@ -163,4 +163,4 @@ left join {{ ref('place_of_service')}} pos
 	on m.place_of_service_code = pos.place_of_service_code
 left join {{ ref('discharge_disposition')}} dd
 	on m.discharge_disposition_code = dd.discharge_disposition_code
-where ifnull(m.revenue_center_code,'') <> '0001'
+where isnull(m.revenue_center_code,'') <> '0001'
