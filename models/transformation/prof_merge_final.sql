@@ -36,7 +36,7 @@ select
     ,cast(previous_claim_start_date as date) as claim_start_date
     ,cast(previous_claim_end_date as date) as claim_end_date
 from master_claim_id
-where isnull(previous_claim, 'start') <> claim_id_a
+where ifnull(previous_claim, 'start') <> claim_id_a
 
 union all 
 
