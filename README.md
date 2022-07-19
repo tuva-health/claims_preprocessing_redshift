@@ -16,9 +16,10 @@ adjacent dates into a single inpatient stay).
 
 
 ## Pre-requisites
-1. You have claims data (CCLF, SAF, commercial) in a data warehouse mapped to the Tuva input layer (reference Google sheet linked above)
+1. You have claims data (e.g. medicare, medicaid, or commercial) in a data warehouse
+2. You must map your claims data to the [claim input layer](https://docs.google.com/spreadsheets/d/1NuMEhcx6D6MSyZEQ6yk0LWU0HLvaeVma8S-5zhOnbcE/edit?usp=sharing)
     - The claim input layer is at a claim line level and each claim id and claim line number is unique
-    - The eligibility file is unique at the month/year grain per patient and payor
+    - The eligibility input layer is unique at the month/year grain per patient and payer
     - Revenue code is 4 digits in length
 2. You have [dbt](https://www.getdbt.com/) installed and configured (i.e. connected to your data warehouse)
 
@@ -42,9 +43,7 @@ Complete the following steps to configure the package to run in your environment
 The table names listed are the same as in the Tuva data model (linked above).  If you decided to rename these tables:
     - Update table names in sources.yml
     - Update table name in medical_claim and eligibility jinja function
-
-5. Execute `dbt build` to load seed files, run models, and perform tests.  
-    - Note: The pipeline will stops
+5. Execute `dbt build` to load seed files, run models, and perform tests.
 
 ## Contributions
 Have an opinion on the mappings? Notice any bugs when installing and running the package? 
