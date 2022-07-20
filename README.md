@@ -39,8 +39,7 @@ Complete the following steps to configure the package to run in your environment
         - output_database - database where output of this project should be written.  
         We suggest using the Tuva database but any database will work.
         - output_schema - name of the schema where output of this project should be written
-4. Review [sources.yml](/sources.yml)
-The table names listed are the same as in the Tuva data model (linked above).  If you decided to rename these tables:
+4. Review [sources.yml](models/sources.yml).  The table names listed are the same as in the Tuva data model (linked above).  If you decided to rename these tables:
     - Update table names in sources.yml
     - Update table name in medical_claim and eligibility jinja function
 5. Execute `dbt build` to load seed files, run models, and perform tests.
