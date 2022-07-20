@@ -52,4 +52,4 @@ If so, we highly encourage and welcome contributions!
 Join the conversation on [Slack](https://tuvahealth.slack.com/ssb/redirect#/shared-invite/email)!  We'd love to hear from you on the #claims-preprocessing channel.
 
 ## Database Support
-This package has been written for Snowflake.  Redshift is available [here](https://github.com/thutuva/claims_preprocessing_redshift)
+This package has been written for Redshift.  Snowflake is available [here](https://github.com/tuva-health/claims_preprocessing_snowflake)
