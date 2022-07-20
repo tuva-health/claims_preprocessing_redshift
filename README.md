@@ -12,12 +12,12 @@ Claims preprocessing enhances medical claims data to make it useful for analytic
 and the place of service code of professional claims.
 - Grouping individual claims into encounters (this involves logic to, for example, merge claims with overlapping dates or 
 adjacent dates into a single inpatient stay).
-- Crosswalk professional claims to institutional encounters.
+- Crosswalking professional claims to institutional encounters.
 
 
 ## Pre-requisites
 1. You have claims data (e.g. medicare, medicaid, or commercial) in a data warehouse
-2. You must map your claims data to the [claim input layer](https://docs.google.com/spreadsheets/d/1NuMEhcx6D6MSyZEQ6yk0LWU0HLvaeVma8S-5zhOnbcE/edit?usp=sharing)
+2. You have mapped your claims data to the [claim input layer](https://docs.google.com/spreadsheets/d/1NuMEhcx6D6MSyZEQ6yk0LWU0HLvaeVma8S-5zhOnbcE/edit?usp=sharing)
     - The claim input layer is at a claim line level and each claim id and claim line number is unique
     - The eligibility input layer is unique at the month/year grain per patient and payer
     - Revenue code is 4 digits in length
